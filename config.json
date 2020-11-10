@@ -1,0 +1,63 @@
+{
+    "APP": "API_MANAGER",
+    "WS": "D:\\integration-dev\\9.API\\",
+    "CHECKOUTS": [
+        {
+         "NOMBRE": "CHECKOUT_APP",
+         "SCM_URL": "http://artfapp1156.DTVPAN.COM:8080/tfs/DTV",
+         "SCM_PATH": "$/integration-dev/9.API/"
+        }
+    ],
+    "ENVIRONMENTS": [
+        {
+            "NAME": "QA-M",
+            "LABEL": "ABAJOS",
+            "USER_CREDENTIALS_ID": "api-manager-qa-m",
+            "TOKEN_CREDENTIAL_ID": "api-manager-token-qa-m",
+            "HTTP_PROXY": "172.22.172.189:3128",
+            "IGNORE_SSL_ERRORS": true,
+            "ENDPOINT_TOKEN": "https://vplbrgapidepub-1414780016.us-east-1.elb.amazonaws.com/token",
+            "ENDPOINT_APIS": "https://vplbrgapidepub-1414780016.us-east-1.elb.amazonaws.com:9443/api/am/publisher/v0.11/apis"
+        },
+        {
+            "NAME": "PRD",
+            "LABEL": "ABAJOS",
+            "USER_CREDENTIALS_ID": "api-manager-prd",
+            "TOKEN_CREDENTIAL_ID": "api-manager-token-prd",
+            "HTTP_PROXY": "172.22.172.189:3128",
+            "IGNORE_SSL_ERRORS": false,
+            "ENDPOINT_TOKEN": "https://gateway.api.cloud.wso2.com/token",
+            "ENDPOINT_APIS": "https://gateway.api.cloud.wso2.com/api/am/publisher/apis"
+        }
+    ],
+    "ACTIONS": [
+        {
+            "NAME": "LIST",
+            "SCOPE": "apim:api_view",
+            "HTTP_MODE": "GET",
+            "BODY": false,
+            "API_ID": false
+        },
+        {
+            "NAME": "CREATE",
+            "SCOPE": "apim:api_create",
+            "HTTP_MODE": "POST",
+            "BODY": true,
+            "API_ID": false
+        },
+        {
+            "NAME": "MODIFY",
+            "SCOPE": "apim:api_create",
+            "HTTP_MODE": "PUT",
+            "BODY": true,
+            "API_ID": true
+        },
+        {
+            "NAME": "DELETE",
+            "SCOPE": "apim:api_create",
+            "HTTP_MODE": "DELETE",
+            "BODY": false,
+            "API_ID": true
+        }
+    ]
+}

@@ -1,0 +1,78 @@
+// Rev 0.0.2
+@Library('jenkins-library-local') _
+
+// CONFIG DE LA APLICACION
+String configFile = "/Users/lucas/.jenkins/workspace/Broidery-frontend-dev2/config.json"
+// FIN CONFIG DE LA APLICACION
+
+String RESULTADO = "";
+String FECHAHORA = ""
+Date date = new Date()
+String datePart = date.format("yyyyMMdd")
+String timePart = date.format("HHmm")
+FECHAHORA = datePart + timePart
+String scriptsDir
+String backupDir
+String dateString
+String backupName
+String description
+String mailList
+def moveProperties
+
+node('master') {
+    // Get configuration file.
+    def configuration = readJSON file: configFile
+    // Get environmentProperties
+    configuration.moves.each {
+        if(it.name == ENVIRONMENT) {
+            moveProperties = it
+        }
+    }
+    mailList = configuration.MAILS_NOTIFICATION_TO
+}
+
+pipeline {
+    agent any
+    stages {
+        stage('Borrar carpeta vieja'){
+            steps {
+                sh " rm -rf Games"
+                echo 'Carpeta contenedora antigua borrada'
+            }
+        }
+        stage('Descarga') {
+            steps {
+                sh " git clone https://github.com/CharlesPikachu/Games "
+                echo 'Descarga de proyecto'
+            }
+        }
+        stage('Modificación') {
+            steps {
+                sh " mv ./Games/Game7 ./Games/Dino\\ DevOps"
+                echo 'cambio de nombre Game7 por Dino DevOps'
+            }
+        }
+        stage('Empaquetado') {
+            steps {
+                sh "zip -r ./Dino\\ DevOps.zip ./Games/Dino\\ DevOps"
+                sh "ls"
+                echo 'Files comprimidos..'
+            }
+        }
+        stage('Subida') {
+            steps {
+                sh " git add ./Dino\\ DevOps.zip && git commit -m 'segundo commit' && git push"
+                echo 'Subida a repositorio'
+            }
+        }
+        stage('Envío por correo') {
+            steps {
+                mail (to: 'spirito.lucas87@gmail.com',
+                        subject: "Test DevOps",
+                        body: "Please visit https://github.com/SpiritoLucas/GameDevOps.git for further information"
+                );
+                echo 'Enviando correo....'
+            }
+        }
+    }
+}
